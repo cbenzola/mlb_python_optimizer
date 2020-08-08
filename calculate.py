@@ -15,12 +15,7 @@ def find_best_value():
     print(conn.execute("SELECT name, 1000 * proj_score/price FROM daily_players ORDER BY -proj_score/price LIMIT 40;").fetchall())
 
 def optimal_lineup(remaining_players, lineup):
-    """
-    Tree recursive method to find the optimal lineup given a player budget of $50000
-    :param remaining_players: players that can still be added to the lineup
-    :param lineup: players that are already added to the lineup
-    :return: list of players in the order [PG, SG, SF, PF, C, G, F, UTIL]
-    """
+   
     total_salary = 0
     for spot in lineup:
         if spot is not None:
@@ -51,11 +46,7 @@ def optimal_lineup(remaining_players, lineup):
         return max([optimal_lineup(remaining_players[1:], a) for a in possible_lineups], key=lambda x: lineup_score(x))
 
 def position_converter(string_position):
-    """
-    Converts a string representing DraftKings position eligibility into a Python list
-    :param string_position: DraftKings position eligibility (ex. 'PG/SG')
-    :return: list consisting of eligible positions (ex. ['PG', 'SG'])
-    """
+  
     positions = []
     while string_position != '':
         if string_position[0] == "/":
@@ -74,11 +65,7 @@ def position_converter(string_position):
     return positions
 
 def slot_converter(positions):
-    """
-    Returns the lineup slot numbers that a player with given position eligibility can be inserted into
-    :param positions: Python list of positions represented by strings
-    :return: list of corresponding slot numbers
-    """
+    
     slots = []
     if 'P' in positions:
         if 0 not in slots:
@@ -117,23 +104,13 @@ def slot_converter(positions):
     return slots
 
 def insertion(lineup, slot, player):
-    """
-    Inserts a player into a slot in a lineup
-    :param lineup: DraftKings lineup
-    :param slot: slot number for player to be entered into
-    :param player: Player object to be entered into lineup
-    :return: the new lineup with the Player object entered
-    """
+   
     new_lineup = lineup[:]
     new_lineup[slot]=player
     return new_lineup
 
 def lineup_score(players_chosen):
-    """
-    Sums the projected scores of the players in a lineup
-    :param players_chosen: either 0 or a list representing a DraftKings lineup
-    :return: Projected score of the lineup
-    """
+   
     if players_chosen == 0:
         return 0
     else:
